@@ -1,0 +1,64 @@
+SELECT USERNAME_ , NAMESURNAME , EMAIL , TELNR1 , TELNR2
+FROM USER_ WHERE ID = 1
+
+SELECT * FROM ADDRES
+WHERE USERID = 1
+
+--bu kullanıcının 4 tane adresi bulunmakta 
+--bu iki tabloyu birleştirelim
+
+SELECT USER_.USERNAME_ , USER_.NAMESURNAME ,
+USER_.EMAIL , USER_.TELNR1 , USER_.TELNR2 ,
+ADDRES.ADDRESSTEXT
+FROM USER_ 
+JOIN ADDRES ON USER_.ID = ADDRES.USERID
+WHERE USER_.ID = 1
+
+--JOIN 2.tabloadı ON 1.tabloismi_NOKTA_kolonadı = 2.tabloismi_NOKTA_kolonadı
+--istenen kolonları da yine tabloismi. İle belirtilmesi gerekir
+
+
+--INNER JOIN
+--kesişimlerden herhangi bir tabloda boşluk varsa hiçbir değeri getirmez.
+--JOIN komutu da aynı işlevi yerine getirir
+
+--LEFT JOIN
+--1. tabloyu esas alır
+--2. tabloda bir boşluk var ise 1. tabloda da o değeri getirir
+--2. tabloda NULL yazılır
+
+-RİGHT JOIN
+--1. tabloyu esas alır
+--1.tabloda bir boşluk varsa 2. tabloda değeri getirir
+--1. tabloda NULL yazılır
+
+--FULL JOIN
+--iki tabloyu da esas alır
+--iki tabloda tüm değerler gelir boşluklarda NULL yazılır
+
+
+--ALIAS KULLANIMI
+
+SELECT A.* , B.ADDRESSTEXT
+FROM USER_ A
+JOIN ADDRES B  ON A.ID = B.USERID
+--from ve join kısmında kısaca takma isim takılabilir
+
+
+--KULLANICININ İSİMLERİ VE KAÇ TANE ADRESLERİNİN OLDUĞU
+SELECT 
+A.USERNAME_  kullanici_ismi, 
+COUNT(B.ADDRESSTEXT) adres_sayisi
+FROM USER_ A
+JOIN ADDRES B  ON A.ID = B.USERID
+GROUP BY A.USERNAME_
+ORDER BY  COUNT(B.ADDRESSTEXT) DESC
+
+
+--ŞEHİRLER VE KULLANICI SAYILARI
+SELECT B.CITYID  ,
+COUNT(A.USERNAME_)
+FROM ADDRES B
+JOIN USER_ A ON B.USERID = A.ID
+GROUP BY B.CITYID
+ORDER BY 2 DESC
