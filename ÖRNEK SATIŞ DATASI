@@ -1,0 +1,108 @@
+SELECT
+Sum()
+Count()   --SATIR SAYISI
+Min()
+Max()
+Avg()       --ORTALAMA
+FROM tabloadı
+
+
+SELECT SUM(LINENET), COUNT(*) FROM SALES        --satış toplamı ve kaç satır olduğu
+
+
+SELECT MIN(LINENET) AS MINIMUM_SATIS, 
+MAX(LINENET) AS MAKSIMUM_SATIS,
+AVG(LINENET) AS ORTALAMA_SATIS
+FROM SALES                                                                    --sütunlara başlık verme
+
+
+SELECT 
+SUM(LINENET) AS TOPLAM,
+MIN(LINENET) AS MIN_,
+MAX(LINENET) AS MAKS,
+AVG(LINENET) AS ORT
+FROM SALES WHERE BRANCH= 'istanbul Subesi'   --seçtiğimiz ile göre bilgiler
+
+
+SELECT 
+BRANCH,                   --illerin olduğu ayrı bir sütunun olması
+SUM(LINENET) AS TOPLAM,
+MIN(LINENET) AS MIN_,
+MAX(LINENET) AS MAKS,
+AVG(LINENET) AS ORT
+FROM SALES 
+GROUP BY BRANCH           --hangi değişkenin kategorilerine göre olacağını seçiyoruz
+
+
+
+-- toplam satışı en yüksek olan şehirleri ve max satış tutarını bk olacak şekilde getir
+
+SELECT TOP 10                    --en yüksek 10 satış
+BRANCH AS SEHIR,
+SUM(LINENET) AS TOPLAM_SATIS,
+MAX(LINENET) AS MAKS_SATIS
+FROM SALES
+GROUP BY BRANCH
+ORDER BY  SUM(LINENET) DESC           --order by 2 de yazılabilirdi
+
+
+--toplam satış 50000 den büyükleri getir
+
+SELECT 
+BRANCH AS SEHIR,
+SUM(LINENET) AS TOPLAM_SATIS,
+MAX(LINENET) AS MAKS_SATIS
+FROM SALES 
+GROUP BY BRANCH
+HAVING SUM(LINENET) > 50000       --burada where kullanılmaz
+--group by ve fonksiyonlu işlemlerde HAVING kullanılır group by'dan sonra
+
+
+--seçilen şehir ve tarihlere göre pivot tablo oluşturma
+
+SELECT 
+BRANCH , DATE_, SUM(LINENET) , COUNT(*)
+FROM SALES 
+WHERE BRANCH ='BURSA SUBESi' AND DATE_='2017-01-05'
+GROUP BY BRANCH , DATE_
+
+
+--ürün kategorilerine göre satış tutarı
+
+SELECT 
+CATEGORY_NAME1 KATEGORI , BRAND ,
+SUM(LINENET) AS TOPLAM
+FROM SALES
+WHERE CATEGORY_NAME1 IS NOT NULL                      --NULL olanları getirme
+AND CATEGORY_NAME1 = 'GIDA'                                    --sadece gıda kategorisi içi
+GROUP BY  CATEGORY_NAME1 , BRAND                      --kategori ve markalara göre gruplandır
+ORDER BY 3 DESC
+
+
+--ürün markasına göre toplam satış tutarı
+
+SELECT  BRAND ,CATEGORY_NAME1 KATEGORI , 
+SUM(LINENET) TOPLAM
+FROM SALES
+WHERE BRAND IS NOT NULL
+AND BRAND = 'ÜLKER'
+GROUP BY  BRAND , CATEGORY_NAME1
+ORDER BY 3 DESC
+
+
+-- mağazaların müşteri sayısı 
+
+SELECT DISTINCT BRANCH  , COUNT( DISTINCT CLIENTNAME) 
+FROM SALES
+GROUP BY BRANCH 
+ORDER BY 2 DESC
+
+
+-- bir müşterinin gittiği mağaza sayısı
+
+SELECT CLIENTNAME , COUNT(DISTINCT BRANCH)
+FROM SALES
+WHERE CLIENTNAME IS NOT NULL 
+GROUP BY CLIENTNAME 
+HAVING COUNT(DISTINCT BRANCH) >= 5         --5 ve 5'ten çok şube
+ORDER BY 2 DESC
