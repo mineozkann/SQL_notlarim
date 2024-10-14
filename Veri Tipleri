@@ -1,0 +1,22 @@
+Sayısal değişkenler için
+Smallint:        +-2^15 (32,768)  ve 2 Byte yer kaplar
+Int:                 +- 2^31(2,147,468,648 ) ve 4 Byte yer kaplar
+Bigint:            +-2^63 (-9,223,372,036,854,775,808) ve 8 Byte yer kaplar
+
+
+Nitel değişkenler için
+Char():           0-8000 arasında  () -> kadar Byte yer tutar. Girilen değerden bağımsız belirlenen sayı kadar yer kaplar
+Nchar():         ing alfabesinde olmayan harfler kullanılacağı zaman her bir karakter için 2 Byte yer tutar
+Varchar():     chardan farkı girilen karakter kadar yer tutması
+ **varchar(max) biçiminde kullanılabilir.
+
+
+Ondalıklı değer alan değişkenler için:
+Decimal( , ) :           ilk girilen değer virgülden önceki max hane sayısını belirler
+                                  2. girilen değer virgülden sonraki hane sayısını belirler
+Float:                        yuvarlamadan direkt girillen değer kadar yer tutar
+
+Tarih ve saat veri tipleri:
+Date:               sadece tarih
+Time:               sadece saat
+Datetime:       hem tarih hem saat
